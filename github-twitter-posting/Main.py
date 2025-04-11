@@ -22,7 +22,7 @@ def getClient(tokens):
 
 def postMediaToTwitter(tokens, filename, text):
     try:
-        # fix this becuase the keys are already in the txt document
+        
         api = getApi(tokens)
         client = getClient(tokens)
 
@@ -38,7 +38,7 @@ def postMediaToTwitter(tokens, filename, text):
 
 def read_tokens_from_file():
     # Open the text file containing the information
-    with open('Twitter Api Keys.txt', 'r') as file:
+    with open('/Users/alannunezsilva/Documents/Twitter-Api/github-twitter-posting/Twitter Api Keys.txt', 'r') as file:
         lines = file.readlines()
 
     # Initialize a list to store account info
@@ -98,7 +98,7 @@ def generate_thumbnail(video_path):
 # Function to create the GUI and select video files
 def select_videos():
     # Path where the video files are stored
-    folder_path = 'Clips to post'
+    folder_path = r'/Users/alannunezsilva/Documents/Twitter-Api/github-twitter-posting/Clips to post'
     
     # Ensure the folder exists
     if not os.path.exists(folder_path):
@@ -196,33 +196,30 @@ def main():
     while True:
         tokensFromSpecifiedAccount = read_tokens_from_file()
             
-        selected_videos = select_videos()
+        path_to_selected_videos = select_videos()
 
         # If videos were selected, ask for the caption and assign it
-        if selected_videos:
-            videos_with_captions = assign_caption(selected_videos)
+        if path_to_selected_videos:
+            videos_with_captions = assign_caption(path_to_selected_videos)
             if videos_with_captions:
                 print("Videos and Captions:")
                 for video, caption in videos_with_captions.items():
                     print(f"{video}: {caption}")
 
-        # finish the below code to upload the videos to twitter
+        # you need to fix the account variable to make sure to get the account name from the tokensFromSpecifiedAccount
+        # for path, caption in videos_with_captions.items():
 
-        # account = "@Fazee_clipss_"
-        # status = postMediaToTwitter(tokensFromSpecifiedAccount[0], path, caption)
-        # if status == 1:
-        #     sq.whatUploadPathToUse(path, get_current_datetime(), account)
+        #     status = postMediaToTwitter(tokensFromSpecifiedAccount[0], path, caption)
+        #     if status == 1:
+        #         sq.whatUploadPathToUse(path, get_current_datetime(), account)
+
+        #     status = postMediaToTwitter(tokensFromSpecifiedAccount[1], path, caption)
+        #     if status == 1:
             
-        # caption = input("Enter Caption For 2nd Tweet: ")
-        # account = "@faze_daily_clip"
-
-        # status = postMediaToTwitter(tokensFromSpecifiedAccount[1], path, caption)
-        # if status == 1:
-        
-        #     # use path to update sql
-        #     # use path to get the downloadedtwittervideo id and then use the id to update the status table to check that 
-        #     # it has been upload to twitter
-        #     sq.whatUploadPathToUse(path, get_current_datetime(), account)
+        #         # use path to update sql
+        #         # use path to get the downloadedtwittervideo id and then use the id to update the status table to check that 
+        #         # it has been upload to twitter
+        #         sq.whatUploadPathToUse(path, get_current_datetime(), account)
 
 if __name__ == '__main__':
     main()
