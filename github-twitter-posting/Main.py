@@ -38,7 +38,7 @@ def postMediaToTwitter(tokens, filename, text):
 
 def read_tokens_from_file():
     # Open the text file containing the information
-    with open('/Users/alannunezsilva/Documents/Twitter-Api/github-twitter-posting/Twitter Api Keys.txt', 'r') as file:
+    with open('Twitter Api Keys.txt', 'r') as file:
         lines = file.readlines()
 
     # Initialize a list to store account info
@@ -98,7 +98,7 @@ def generate_thumbnail(video_path):
 # Function to create the GUI and select video files
 def select_videos():
     # Path where the video files are stored
-    folder_path = r'/Users/alannunezsilva/Documents/Twitter-Api/github-twitter-posting/Clips to post'
+    folder_path = r'C:\Users\aa\Desktop\Cool-Programs\Twitter-Api\github-twitter-posting\Clips to post'
     
     # Ensure the folder exists
     if not os.path.exists(folder_path):
@@ -195,6 +195,7 @@ def get_current_datetime():
 def main():
     while True:
         tokensFromSpecifiedAccount = read_tokens_from_file()
+        print(tokensFromSpecifiedAccount)
             
         path_to_selected_videos = select_videos()
 
@@ -203,23 +204,22 @@ def main():
             videos_with_captions = assign_caption(path_to_selected_videos)
             if videos_with_captions:
                 print("Videos and Captions:")
+                
                 for video, caption in videos_with_captions.items():
                     print(f"{video}: {caption}")
 
         # you need to fix the account variable to make sure to get the account name from the tokensFromSpecifiedAccount
-        # for path, caption in videos_with_captions.items():
+        # ensure the tokens are actually read properly inside of getapi() or when you post the media to twitter
+        # create a gui for a computer program
+        # this program is meant for clippers
+        for path, caption in videos_with_captions.items():
 
-        #     status = postMediaToTwitter(tokensFromSpecifiedAccount[0], path, caption)
-        #     if status == 1:
-        #         sq.whatUploadPathToUse(path, get_current_datetime(), account)
-
-        #     status = postMediaToTwitter(tokensFromSpecifiedAccount[1], path, caption)
-        #     if status == 1:
-            
-        #         # use path to update sql
-        #         # use path to get the downloadedtwittervideo id and then use the id to update the status table to check that 
-        #         # it has been upload to twitter
-        #         sq.whatUploadPathToUse(path, get_current_datetime(), account)
+            status = postMediaToTwitter(tokensFromSpecifiedAccount[0], path, caption)
+            if status == 1:
+                # use path to update sql
+                # use path to get the downloadedtwittervideo id and then use the id to update the status table to check that 
+                # it has been upload to twitter
+                sq.whatUploadPathToUse(path, get_current_datetime(), tokensFromSpecifiedAccount['account_name'])
 
 if __name__ == '__main__':
     main()
