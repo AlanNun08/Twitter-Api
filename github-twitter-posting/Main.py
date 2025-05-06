@@ -1,5 +1,4 @@
 import tweepy
-import PostingMethods as pm
 import SqlCommands as sq
 from datetime import datetime
 import tkinter as tk
@@ -212,15 +211,14 @@ def main():
 
             # Prompt user to select an account
             account = input("Enter the account name to post to: ")
-            tokens = tokens = tokensFromSpecifiedAccount[account]
+            tokens = tokensFromSpecifiedAccount[account]
 
             # assign the correct tokens to the postMediaToTwitter function
             status = postMediaToTwitter(tokens, path, caption)
             if status == 1:
-                # use path to update sql
-                # use path to get the downloadedtwittervideo id and then use the id to update the status table to check that 
-                # it has been upload to twitter
-                sq.whatUploadPathToUse(path, get_current_datetime(), tokensFromSpecifiedAccount.get(account))
+                # use path to update sql it has been upload to twitter
+                sq.create_clips_database()
+                sq.mark_clip_uploaded(path, account)
 
 if __name__ == '__main__':
     main()
