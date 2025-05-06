@@ -39,27 +39,26 @@ def read_tokens_from_file():
     with open('Twitter Api Keys.txt', 'r') as file:
         lines = file.readlines()
 
-    # Initialize a dictionary to store all accounts' tokens
+    # Initialize the result dictionary
     accounts_info = {}
 
-    # Initialize a dictionary to store the current account's tokens
+    # Temporary holders
     tokens = {}
     account_name = None
 
-    # Iterate through the lines in the file
+    # Process each line
     for line in lines:
-        line = line.strip()  # Remove any leading/trailing whitespaces
+        line = line.strip()
 
-        # Check if the line contains the name of the account (e.g., Personal)
+        # Start of a new account
         if "Twitter API Account" in line:
-            if account_name is not None:  # Save previous account's tokens
+            if account_name is not None:
                 accounts_info[account_name] = tokens
 
-            # Reset for the new account
+            # Extract account name after the dash
             account_name = line.split('-')[-1].strip()
             tokens = {}
 
-        # Extract tokens based on the line content
         elif "Consumer API Key" in line:
             tokens['consumer_api_key'] = line.split(":")[1].strip()
         elif "Consumer API Secret" in line:
@@ -71,12 +70,12 @@ def read_tokens_from_file():
         elif "Bearer Token" in line:
             tokens['bearer_token'] = line.split(":")[1].strip()
 
-    # Add the last account
+    # Add the last account's tokens
     if account_name is not None:
         accounts_info[account_name] = tokens
 
-    # Return the dictionary of accounts and their tokens
     return accounts_info
+
 # Function to generate thumbnail from a video file
 def generate_thumbnail(video_path):
     # Use OpenCV to extract a frame from the video
@@ -205,23 +204,23 @@ def main():
         # create a gui for a computer program
         for path, caption in videos_with_captions.items():
 
-            
             # Display available accounts
-            for account_info in tokensFromSpecifiedAccount:
-                print (f"Account: {account_info.get('account_name')}")
+            for account_info in tokensFromSpecifiedAccount.items():
+                print (f"Account: {account_info[0]}")
                 print("")
                 print("")
 
             # Prompt user to select an account
             account = input("Enter the account name to post to: ")
+            tokens = tokens = tokensFromSpecifiedAccount[account]
 
             # assign the correct tokens to the postMediaToTwitter function
-            status = postMediaToTwitter(tokensFromSpecifiedAccount.get(account), path, caption)
+            status = postMediaToTwitter(tokens, path, caption)
             if status == 1:
                 # use path to update sql
                 # use path to get the downloadedtwittervideo id and then use the id to update the status table to check that 
                 # it has been upload to twitter
-                sq.whatUploadPathToUse(path, get_current_datetime(), tokensFromSpecifiedAccount['account_name'])
+                sq.whatUploadPathToUse(path, get_current_datetime(), tokensFromSpecifiedAccount.get(account))
 
 if __name__ == '__main__':
     main()
